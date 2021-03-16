@@ -1,12 +1,10 @@
-## Typecho开启地址重写的正确姿势
+# Typecho开启地址重写的正确姿势
 
-![Cover](Typecho开启地址重写的正确姿势/Cover.png)
-
-<!-- more-->
+![Cover](Typecho开启地址重写的正确姿势/Cover.jpg)
 
 ## 一、背景介绍
 
-因为Typecho博客的url默认会带一个“/index.php/”，看起来非常不美观。在Typecho后台支持我们重写地址，将url更改为我们喜欢的形式，比如我的博客文章的地址：“blog.vilicode.com/p/xxx.html”。这样无论是引擎检索还是传递给别人看起来都非常美观。
+因为Typecho博客的url默认会带一个“/index.php/”，看起来非常不美观。在Typecho后台支持我们重写地址，将url更改为我们喜欢的形式，这样无论是引擎检索还是传递给别人看起来都非常美观。
 
 ## 二、环境介绍
 
@@ -14,7 +12,7 @@
 
 ## 三、操作步骤
 
-- 开启Rewrite模块（报错的话停止以下Apache服务）
+- 开启Rewrite模块（报错的话停止一下Apache服务）
 
 ```shell
 sudo a2enmod rewrite
@@ -70,3 +68,6 @@ RewriteRule ^(.*)$ /index.php/$1 [L]
 
 - 重启Apache服务，在网站后台开启地址重写，设置自己想要的url格式即可。
 
+- 在网站后台开启地址重写，设置自己想要的url格式后保存即可。
+
+![Set](Typecho开启地址重写的正确姿势/Set.jpg)

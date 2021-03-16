@@ -1,8 +1,6 @@
 # Typecho部署云服务器流程
 
-![Cover](Typecho部署云服务器流程/Cover.png)
-
-<!-- more-->
+![Cover](Typecho部署云服务器流程/Cover.jpg)
 
 笔者的硬件环境是腾讯云的学生主机，基本就是最低配置的云主机。系统安装的是Ubuntu 16.04 Server，因为Linux系列以来一直使用的Ubuntu，所以就没更改其他的系统。最后说一句，千万不要用Windows Server去部署，你会发现速度超级感人！
 
