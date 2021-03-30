@@ -1,8 +1,10 @@
 # stRDF和stSPARQL
 
-## 一、OCG标准
+## 一、Introduction in stRDF and stSPARQL
 
-### 1.1. 参考坐标系
+### 1. OCG标准
+
+#### 1.1 参考坐标系
 
 - 地理坐标系
   - 三维系统
@@ -12,7 +14,7 @@
   - 将三维椭球转换为二维平面
   - 横向墨卡托（UTM）系统
 
-### 1.2. WTK
+#### 1.2 WTK
 
 使用WKT表示的几何图形具有以下特性：
 
@@ -39,7 +41,7 @@
 - MultiSurface。多重表面是二维几何集合，其元素是表面。任何两个表面的几何内部可能不相交。任何两个表面的边界可能不会交叉，但可能会在有限的点上接触。
 - MultiPolygon。一个多多边形是一个多面集合，它的元素是多边形。每个多边形的边界不得相交。
 
-### 1.3. OpenGIS简单的特性访问
+#### 1.3 OpenGIS简单的特性访问
 
 定义的函数：
 
@@ -78,7 +80,7 @@ ST_Distance(A:Geometry, B:Geometry):Double SQL函数定义用于计算两个几�
 
 标准ISO 13249 SQL/MM是一个用于SQL的多媒体和其他应用扩展的国际标准。该标准的第3部分定义了一组类型和方法，用于表示、处理、存储和查询关系数据库中的空间数据[Sto03, ME01]。空间数据的SQL / MM标准与此处预先提出的OpenGIS简单功能访问标准非常接近，实际上，这两项工作相互影响。因此，我们在本文档中不会提供任何详细信息。
 
-### 1.4. 地理标记语言
+#### 1.4 地理标记语言
 
 地理标记语言（GML）[OGC07]是用于表示地理空间数据的最常见的基于XML的编码标准。 GML由OGC开发，它基于OGC抽象规范。 GML提供了XML模式，用于定义地理学中使用的各种概念：地理特征，几何形状，坐标参考系统，拓扑，时间和度量单位。最初，GML抽象模型基于RDF和RDFS，但后来该联盟决定使用XML和XMLSchema。 GML配置文件是GML的逻辑限制，可能对不想使用整个GML的应用程序有用。可以通过XML文档和XML模式或两者同时指定GML配置文件。
 
@@ -100,7 +102,7 @@ ST_Distance(A:Geometry, B:Geometry):Double SQL函数定义用于计算两个几�
 
 
 
-## 二、新版本的stRDF和stSPARQL
+### 2. 新版本的stRDF和stSPARQL
 
 在stRDF [KKN + 11]的最新版本中，我们使用OGC标准表示地理空间数据。引入了数据类型strdf:WKT和strdf:GML来表示使用第2.1.4节中介绍的OGC标准WKT和GML序列化的几何。
 
@@ -201,11 +203,23 @@ GROUP BY ?ba ?baGeom
 | geonames:264637 | "POLYGON ((20 21, 20 22, 22 22, 22 21, 21.5 21,21.5 20, 21 20, 21 21, 20 21))"ˆˆstrdf:WKT |
 | geonames:251283 | "MULTIPOLYGON (((23.5 18.5, 23 18, 23 18.5,23.5 18.5)), ((23.5 19, 24 19, 23.5 18.5, 23.519)))"ˆˆstrdf:WKT |
 
+### 3. Strabon系统
 
+#### 3.1 Strabon架构
 
+我们决定以著名的RDF存储区Sesame为基础实施，即使Sesame不是可用的最高效的RDF存储区，但由于其开源特性，分层架构以及广泛的功能性，我们还是决定以它为基础进行实现以及集成“基于空间”的DBMS的能力，以利用其各种空间功能和运营商。Sesame的扩展是为了管理随后存储在PostGIS中的主题和空间RDF数据。PostGIS是postgresql的附加模块，通过添加对地理空间对象的支持来“在空间上启用”PostgreSQL。
 
+当我们开始实现的时候，我们的目标是创建一个可以以透明的方式包含在Sesame软件堆栈中的层，这样它就不会影响Sesame的一系列功能，同时也可以从Sesame的新版本中获益。Strabon现在可以被视为Sesame风帆，可以放置在现有Sesame安装的顶部，而不影响其当前的功能。这种方法证明了我们的正确性，因为我们的第二轮系统开发与引入了SPARQL 1.1支持的Sesame版本相一致。
 
+Strabon遵循Sesame的模块化架构，包括三个模块：
 
+- Query Engine。Strabon的查询引擎对系统提出的stSPARQL查询进行评估。在接收到查询之后，将对其进行解析和优化。然后创建执行计划并执行，并将结果返回给客户端。为了处理stSPARQL查询，对Sesame的评估器和优化器进行了扩展。解析器和事务管理器没有被修改。
+
+- Storage Manager。这个模块处理PostGIS RDBMSlayer中的数据存储。我们扩展了Sesame的组件，以便能够存储我们在3中描述的空间文本。
+
+- PostGIS。PostGIS既用于存储stRDF数据，也用于评估stSPARQL查询。
+
+## 二、Spatial and Temporal Data in RDF stRDF stSPARQL and GeoSPARQL
 
 
 
